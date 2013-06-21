@@ -1,0 +1,11 @@
+<h1>Blogs</h1>
+
+<script type="text/x-handlebars">
+  {{ view App.ListBlogsView }}
+</script>
+
+<script type="text/javascript">
+  $(function() {
+    App.blogsController.loadAll(<%= @blogs.to_json.html_safe %>);
+  });
+</script>
