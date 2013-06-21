@@ -1,6 +1,6 @@
 {{#with blog}}
-  {{view Ember.TextField valueBinding="title" placeholder="Title"}}
-  {{view Ember.TextField valueBinding="body"  placeholder="Body"}}
+  {{view Ember.TextField valueBinding="title" placeholder="Title"}}  <br/>
+  {{view Ember.TextArea valueBinding="body"  placeholder="Body" rows="30" cols="60"}}<br/>
   <button type="submit">
     {{#if id}}Update{{else}}Create{{/if}}
   </button>
