@@ -1,27 +1,20 @@
 class BlogsController < ApplicationController
-  # GET /blogs
-  # GET /blogs.json
+  before_filter :authenticate_user!
+  before_filter :get_blog, :only => [:show, :update, :destroy]
+  before_filter :get_blogs, :only => [:index]
+
+  respond_to :json, :html
+
   def index
-    @blogs = Blog.all
-
-    respond_to do |format|
-      format.html # index.html.erb
-      format.json { render json: @blogs }
-    end
+    respond_with(@blogs)
   end
 
-  # GET /blogs/1.json
   def show
-    @blog = Blog.find(params[:id])
-
-    respond_to do |format|
-      format.json { render json: @blog }
-    end
+    respond_with(@blog)
   end
 
-  # POST /blogs.json
   def create
-    params[:blog][:user_id] = User.first.try(:id)
+    params[:blog][:user_id] = current_user.id
     @blog = Blog.new(params[:blog])
 
     respond_to do |format|
@@ -33,10 +26,7 @@ class BlogsController < ApplicationController
     end
   end
 
-  # PUT /blogs/1.json
   def update
-    @blog = Blog.find(params[:id])
-
     respond_to do |format|
       if @blog.update_attributes(params[:blog])
         format.json { render json: nil, status: :ok }
@@ -46,13 +36,20 @@ class BlogsController < ApplicationController
     end
   end
 
-  # DELETE /blogs/1.json
   def destroy
-    @blog = Blog.find(params[:id])
     @blog.destroy
 
     respond_to do |format|
       format.json { render json: nil, status: :ok }
     end
+  end
+
+  private
+  def get_blog
+    @blog = Blog.find(params[:id])
+  end
+
+  def get_blogs
+    @blogs = Blog.all
   end
 end
